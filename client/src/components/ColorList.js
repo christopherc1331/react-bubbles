@@ -6,7 +6,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ getColors, colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -25,6 +25,7 @@ const ColorList = ({ colors, updateColors }) => {
         console.log(res);
       })
       .catch(err => console.log(err));
+    getColors();
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
@@ -32,6 +33,13 @@ const ColorList = ({ colors, updateColors }) => {
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    AxiosWithAuth()
+      .delete(`/colors/${color.id}`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    getColors();
   };
 
   return (
