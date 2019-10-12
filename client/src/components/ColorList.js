@@ -6,7 +6,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ getColors, colors, updateColors }) => {
+const ColorList = ({ editColors, deleteColorList, addColor, colors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -15,17 +15,13 @@ const ColorList = ({ getColors, colors, updateColors }) => {
     setColorToEdit(color);
   };
 
-  console.log("edit color from colorList.js", colorToEdit);
-
   const saveEdit = e => {
     e.preventDefault();
     AxiosWithAuth()
       .put(`/colors/${colorToEdit.id}`, colorToEdit)
-      .then(res => {
-        console.log(res);
-      })
+      .then(res => editColors(res.data))
       .catch(err => console.log(err));
-    getColors();
+    // getColors();
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
@@ -35,12 +31,23 @@ const ColorList = ({ getColors, colors, updateColors }) => {
     // make a delete request to delete this color
     AxiosWithAuth()
       .delete(`/colors/${color.id}`)
+      .then(res => deleteColorList(res.data.id))
+      .catch(err => console.log(err));
+  };
+
+  const addNewColor = color => {
+    AxiosWithAuth()
+      .post(`/colors`)
       .then(res => {
         console.log(res);
+        // addColor(res.data);
       })
       .catch(err => console.log(err));
-    getColors();
   };
+
+  const [newColor, setNewColor] = useState({
+    colorName: ""
+  });
 
   return (
     <div className="colors-wrap">
@@ -91,8 +98,14 @@ const ColorList = ({ getColors, colors, updateColors }) => {
           </div>
         </form>
       )}
-      <div className="spacer" />
+      {/* <div className="spacer" /> */}
       {/* stretch - build another form here to add a color */}
+      {/* <div>
+        <form>
+          <input name="colorName" value={newColor.colorName} />
+          <p>hi</p>
+        </form>
+      </div> */}
     </div>
   );
 };

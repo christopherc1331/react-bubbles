@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AxiosWithAuth from "../utils/AxiosWithAuth.js";
 
 const Login = props => {
@@ -26,9 +26,6 @@ const Login = props => {
     username: "",
     password: ""
   });
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleChanges = e => {
     setUserLoginInfo({ ...userLoginInfo, [e.target.name]: e.target.value });
