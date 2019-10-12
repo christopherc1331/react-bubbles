@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from "react";
+import AxiosWithAuth from "../utils/AxiosWithAuth.js";
 
-const Login = () => {
+const Login = props => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
+  console.log("Props from login", props);
+
+  const submitForm = event => {
+    event.preventDefault();
+    AxiosWithAuth()
+      .post("/login", userLoginInfo)
+      .then(res => {
+        console.log("result from Login call", res);
+        localStorage.setItem("token", res.data.payload);
+        setUserLoginInfo({
+          username: "",
+          password: ""
+        });
+        props.history.push("/bubblepage");
+      })
+      .catch(err => console.log(err));
+  };
 
   const [userLoginInfo, setUserLoginInfo] = useState({
     username: "",
@@ -19,7 +37,7 @@ const Login = () => {
   return (
     <div className="formContainer">
       <div className="formBox">
-        <form>
+        <form onSubmit={submitForm}>
           <input
             name="username"
             type="text"
@@ -34,6 +52,7 @@ const Login = () => {
             onChange={handleChanges}
             placeholder="Password"
           />
+          <button hidden />
         </form>
       </div>
     </div>
