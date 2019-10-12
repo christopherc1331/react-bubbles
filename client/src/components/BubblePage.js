@@ -27,10 +27,6 @@ const BubblePage = () => {
     );
   };
 
-  const addColor = newColorObj => {
-    setColorList([...colorList, newColorObj]);
-  };
-
   useEffect(() => {
     AxiosWithAuth()
       .get("/colors")
@@ -50,7 +46,6 @@ const BubblePage = () => {
         editColors={editColors}
         colors={colorList}
         updateColors={setColorList}
-        addColor={addColor}
       />
       <Bubbles colors={colorList} />
     </>
